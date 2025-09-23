@@ -30,6 +30,7 @@ To run these notebooks, you'll need Python 3 and a few key data science librarie
 - `utilsforecast`
 - `tensorflow`
 - `torch`
+  
 You can install them using pip:
 ```bash
 pip install numpy pandas matplotlib seaborn statsmodels scikit-learn statsforecast utilsforecast tensorflow torch
