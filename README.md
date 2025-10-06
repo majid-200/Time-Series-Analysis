@@ -309,4 +309,41 @@ By the end of the notebook, a clear set of performance metrics (MAE) for various
         -   **Performance:** The LSTM model's performance is benchmarked against the multi-output baseline, linear, and DNN models. Consistent with previous results, the LSTM achieves the lowest Mean Absolute Error, proving its effectiveness across different types of forecasting problems.
     5.  **Comprehensive Comparison:** The notebook concludes with summary bar charts for each forecasting task, visually comparing the test MAE of every model built so far. The charts consistently show that the **LSTM model is the top-performing architecture** in all scenarios, solidifying its status as a powerful tool for time series forecasting.
  
+### **Notebook 15: Convolutional Neural Networks (CNNs) for Time Series**
 
+-   **Concept:** Explores the application of **Convolutional Neural Networks (CNNs)**, an architecture traditionally used for image processing, to time series forecasting. The notebook demonstrates how 1D convolutions can act as powerful feature extractors, identifying local patterns and trends in sequential data. It also introduces a hybrid **CNN-LSTM** model that combines the strengths of both architectures.
+-   **Dataset:** The preprocessed Metro Interstate Traffic Volume and Beijing Air quality datasets.
+-   **Analysis & Key Steps:**
+    1.  **Introducing CNNs for Sequences:** The notebook explains how a `Conv1D` layer works. A "kernel" (or filter) slides across the input time series, performing a dot product at each step. This operation allows the network to learn to recognize specific short-term patterns (like a sudden spike or a dip) in the data. By using multiple filters, a CNN can learn a rich set of features from the raw sequence.
+    2.  **CNN Model:**
+        -   **Architecture:** A simple CNN is built with a `Conv1D` layer (32 filters, kernel size of 3), followed by two `Dense` layers. This architecture is designed to first extract features from the sequence and then use a standard DNN to make a prediction.
+        -   **Tasks:** The CNN is applied to single-step, multi-step, and multi-output forecasting tasks.
+        -   **Performance:** The CNN's performance is consistently better than the baseline and linear models but is often comparable to or slightly worse than the DNN and LSTM models, depending on the task.
+    3.  **Hybrid CNN-LSTM Model:**
+        -   **Architecture:** This advanced model combines a `Conv1D` layer with `LSTM` layers. The `Conv1D` layer acts as a feature preprocessor, extracting salient patterns from the raw input sequence. The output of the convolutional layer is then fed into a stack of LSTM layers, which model the temporal relationships between the extracted features.
+        -   **Rationale:** The CNN is good at identifying local, short-term patterns, while the LSTM excels at understanding long-term dependencies. Combining them allows the model to leverage the best of both worlds.
+        -   **Performance:** The CNN-LSTM hybrid model is trained and evaluated on all forecasting tasks. In the multi-output scenario, it emerges as the **best-performing model**, demonstrating the power of combining different neural network architectures to tackle complex problems.
+    4.  **Comprehensive Evaluation:** As in previous chapters, the notebook concludes with a thorough comparison of all models built so far, including the new CNN and CNN-LSTM architectures. Bar charts visualize the test MAE for each model across the different forecasting tasks. The results highlight that while LSTMs are powerful on their own, hybrid models like the CNN-LSTM can offer a competitive or even superior alternative, especially in complex multi-output scenarios.
+
+### **Notebook 16: Autoregressive Deep Learning Models**
+
+-   **Concept:** Introduces an advanced and powerful deep learning technique known as **autoregression**. In an autoregressive model, the predictions generated at each time step are fed back into the model as inputs to help generate the next prediction. This creates a feedback loop that allows the model to produce an entire sequence of future values dynamically, making it particularly well-suited for multi-step forecasting.
+-   **Dataset:** The preprocessed Metro Interstate Traffic Volume and Beijing Air Quality datasets.
+-   **Analysis & Key Steps:**
+    1.  **Understanding Autoregression:** The notebook explains the core mechanism of an autoregressive LSTM. Unlike a standard LSTM that makes all future predictions in a single pass, an autoregressive model works iteratively:
+        -   It takes an initial sequence of inputs to "warm up" its internal state.
+        -   It generates a prediction for the next single time step.
+        -   This prediction is then appended to the input sequence (or used as the new input), and the model generates a prediction for the *next* time step.
+        -   This process is repeated until the full forecast horizon is generated.
+    2.  **Implementation of an Autoregressive LSTM:**
+        -   **Architecture:** The model is built using lower-level components like `LSTMCell` and `RNN` layers to explicitly manage the feedback loop. A `warmup` method is created to initialize the model's state, and the main `call` method contains a `for` loop that iterates to produce the sequence of predictions.
+        -   **Frameworks:** As with previous deep learning notebooks, the autoregressive LSTM is implemented in both **TensorFlow** and **PyTorch**, showcasing how to construct this advanced architecture in each framework.
+    3.  **Training and Evaluation:**
+        -   **Task:** The model is applied to a multi-step forecasting task: predicting the next 24 hours of traffic volume.
+        -   **Performance:** The autoregressive LSTM is trained and its performance is evaluated against all previously built multi-step models.
+    4.  **Performance Analysis and Caveats:**
+        -   The final results show that the autoregressive LSTM performs better than the baselines and the simple linear model but does not outperform the standard multi-step **Dense**, **LSTM**, or **CNN** models.
+        -   The notebook explains a critical weakness of autoregressive models: **error accumulation**. Because predictions are fed back as inputs, any error made in an early prediction can be amplified in subsequent steps, potentially leading to a degradation in performance over a long forecast horizon.
+    5.  **Conclusion and Model Selection:**
+        -   The notebook concludes by presenting a final, comprehensive comparison of all multi-step models.
+        -   While the autoregressive LSTM is a powerful and conceptually important architecture (forming the basis for state-of-the-art models like WaveNet and DeepAR), for this specific problem, a simpler multi-step **Dense** or **LSTM** model provides better accuracy. This serves as an important lesson in model selection: the most complex model is not always the best one.
