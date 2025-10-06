@@ -289,3 +289,24 @@ By the end of the notebook, a clear set of performance metrics (MAE) for various
         -   The results clearly show a hierarchy of performance: **DNN > Linear > Baselines**.
         -   This systematically demonstrates the value of adding complexity (hidden layers and non-linearities) to the model architecture when the underlying data patterns are non-linear.
     5.  **Exercises with Air Quality Data:** The concepts are reinforced through exercises where the same linear and DNN models are applied to the Beijing Air Quality dataset, tasking the user to predict `NO2` levels and showcasing the general applicability of these architectures.
+
+### **Notebook 14: Long Short-Term Memory (LSTM) Networks**
+
+-   **Concept:** Introduces a more advanced and powerful Recurrent Neural Network (RNN) architecture: the **Long Short-Term Memory (LSTM)** network. LSTMs are specifically designed to overcome the limitations of simple RNNs by effectively learning long-range dependencies in sequential data, making them highly suitable for time series forecasting.
+-   **Dataset:** The preprocessed Metro Interstate Traffic Volume and Beijing Air Quality datasets.
+-   **Analysis & Key Steps:**
+    1.  **Introducing LSTMs:** The notebook begins by explaining the core idea behind LSTMs. Unlike simple RNNs, which can struggle with long sequences due to the vanishing gradient problem, LSTMs use a system of "gates" (forget, input, and output) and a dedicated "cell state" to regulate the flow of information. This allows the network to selectively remember important information over long periods and forget irrelevant details.
+    2.  **LSTM Model for Single-Step Forecasting:**
+        -   **Architecture:** A simple LSTM model is built with a single LSTM layer containing 32 units, followed by a `Dense` output layer. The `return_sequences=True` argument is used in the LSTM layer, which makes it output the full sequence of hidden states.
+        -   **Evaluation:** The model is trained and evaluated on a single-step forecasting task. The results are then compared to all previously built models (baselines, Linear, and DNN). The LSTM model achieves the best performance, demonstrating its ability to better capture temporal patterns.
+    3.  **LSTM Model for Multi-Step Forecasting:**
+        -   **Task:** Predict the next 24 hours of traffic volume.
+        -   **Architecture:** The same LSTM architecture is used, but it's trained on a multi-step data window.
+        -   **Performance:** The LSTM model is compared against all previous multi-step models. Again, the LSTM delivers the best performance, significantly outperforming the baselines, linear model, and even the DNN. This highlights the LSTM's strength in learning the complex, long-term dependencies required for multi-step forecasting.
+    4.  **LSTM Model for Multi-Output Forecasting:**
+        -   **Task:** Simultaneously predict both `traffic_volume` and `temp` for the next 24 hours.
+        -   **Architecture:** The LSTM model is adapted for a multi-output task by changing the final `Dense` layer to have two output units.
+        -   **Performance:** The LSTM model's performance is benchmarked against the multi-output baseline, linear, and DNN models. Consistent with previous results, the LSTM achieves the lowest Mean Absolute Error, proving its effectiveness across different types of forecasting problems.
+    5.  **Comprehensive Comparison:** The notebook concludes with summary bar charts for each forecasting task, visually comparing the test MAE of every model built so far. The charts consistently show that the **LSTM model is the top-performing architecture** in all scenarios, solidifying its status as a powerful tool for time series forecasting.
+ 
+
